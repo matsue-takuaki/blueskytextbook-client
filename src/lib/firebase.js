@@ -6,12 +6,12 @@ import {getAuth,GoogleAuthProvider} from "firebase/auth"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCiFMDyAOxrUzw4tTwJH8rue9UGl842sjQ",
-  authDomain: "bluesky-textbook.firebaseapp.com",
-  projectId: "bluesky-textbook",
-  storageBucket: "bluesky-textbook.appspot.com",
-  messagingSenderId: "515223980060",
-  appId: "1:515223980060:web:a57dd6e840461c5e8877d9"
+  apiKey:process.env.NEXT_PUBLIC_APIKEY,
+  authDomain:process.env.NEXT_PUBLIC_AUTHDOMAIN,
+  projectId:process.env.NEXT_PUBLIC_PROJECTID,
+  storageBucket:process.env.NEXT_PUBLIC_STORAGEBUCKET,
+  messagingSenderId:process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
+  appId:process.env.NEXT_PUBLIC_APPID
 };
 
 // Initialize Firebase

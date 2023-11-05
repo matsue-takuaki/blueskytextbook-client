@@ -9,12 +9,10 @@ export default function Home() {
   const [university, setUniversity] = useState<string>("九州工業大学");
   // console.log(user);
   const router = useRouter();
-  console.log(user);
-  console.log(university)
   useEffect(()=>{
     if(user){
       // alert("大学を選択してください");
-      router.push(`/${university}`)
+      // router.push(`/${university}`)
     }
   }, [user]);
   const signout = ()=>{
