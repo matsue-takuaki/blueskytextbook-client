@@ -42,7 +42,7 @@ function SelectUniversity() {
           id="university"
           list="school"
           ref={schoolref}
-          placeholder="学校名を入力してください"
+          placeholder="学校名を入力してくださ"
         />
         <datalist id="school">
           {schools.map((school: any) => (
