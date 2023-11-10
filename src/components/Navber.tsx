@@ -1,18 +1,7 @@
-import { auth } from "@/lib/firebase";
-import React, { useEffect } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useRouter } from "next/router";
+import React from "react";
 
-function Navber() {
-  const currentUniversity = "九州工業大学";
-  const [user] = useAuthState(auth);
-//   const router = useRouter();
-//   useEffect(() => {
-//     if (!user) {
-//       alert("ログインしてださい");
-//       router.push("/");
-//     }
-//   }, [user]);
+function Navber(school: any) {
+  const currentUniversity = school.school.school_name;
   return (
     <div className="w-5/6 mx-auto">
       <h1 className="py-8 text-teal-300 text-5xl font-bold">

@@ -1,13 +1,7 @@
 import SignIn from "@/components/SignIn";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/router";
-import SelectUniversity from "@/components/SelectUniversity";
 
 export default function Home() {
-  const [user] = useAuthState(auth);
-  const router = useRouter();
   const signout = () => {
     auth.signOut();
   };
@@ -19,15 +13,9 @@ export default function Home() {
         </h1>
       </div>
       <div className="text-center mt-32">
-        {user ? (
-          <div>
-            <SelectUniversity />
-          </div>
-        ) : (
-          <div className="mt-56">
-            <SignIn />
-          </div>
-        )}
+        <div className="mt-56">
+          <SignIn />
+        </div>
         <button onClick={signout}>サインアウト</button>
       </div>
     </div>
