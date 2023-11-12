@@ -8,13 +8,13 @@ function Navber(school: any) {
   const currentUniversity = school.school.school_name;
   const photoUrl:string | StaticImport = auth.currentUser?.photoURL as string;
   return (
-    <div className="border border-b-teal-400 bg-teal-950">
+    <div className="border bg-teal-950">
       <div className="w-5/6 mx-auto flex justify-between items-center pt-4 pb-6">
         <h1 className="text-teal-300 text-4xl font-bold block">
           青空教科書　ー {currentUniversity} ー
         </h1>
         <div>
-          <Link href={"/"}>
+          <Link href={`/profile/${auth.currentUser?.uid}`}>
             <div className="bg-white rounded-full">
               <img
                 src={photoUrl}
