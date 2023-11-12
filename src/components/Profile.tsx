@@ -2,7 +2,7 @@ import { auth } from "@/lib/firebase";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import React from "react";
 
-function Profile(school:any) {
+function ProfileData(school:any) {
   const photoUrl: string | StaticImport = auth.currentUser?.photoURL as string;
   return (
     <div>
@@ -17,4 +17,4 @@ function Profile(school:any) {
   );
 }
 
-export default Profile;
+export default ProfileData;

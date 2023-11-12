@@ -1,5 +1,5 @@
 import NavbarProfile from "@/components/NavbarProfile";
-import Profile from "@/components/Profile";
+import ProfileData from "@/components/Profile";
 import { auth } from "@/lib/firebase";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-function profile({ id }: any) {
+function Profile({ id }: any) {
   const router = useRouter();
   const [user] = useAuthState(auth);
   const [school, setSchool] = useState<string>("");
@@ -55,10 +55,10 @@ function profile({ id }: any) {
         </div>
       </Link>
       <div className="w-3/4 mx-auto mt-4">
-        <Profile school={school}/>
+        <ProfileData school={school}/>
       </div>
     </div>
   );
 }
 
-export default profile;
+export default Profile;
