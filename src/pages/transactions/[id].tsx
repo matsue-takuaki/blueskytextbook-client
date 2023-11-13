@@ -6,6 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { apiClient, apiSchool } from "@/lib/apiClient";
+import ExhibitionButton from "@/components/ExhibitionButton";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
@@ -29,14 +30,17 @@ function School({ school }: any) {
   // }, [user]);
   return (
     <div className="bg-white">
-      <Navber school={school}/>
-      <main className="w-3/4 mx-auto mt-8 grid grid-cols-3">
-        <Goods discription="たくあきの画像"/>
-        <Goods discription="たくあきの画像"/>
-        <Goods discription="たくあきの画像"/>
-        <Goods discription="たくあきの画像"/>
-        <Goods discription="たくあきの画像"/>
+      <Navber school={school} />
+      <main className="w-3/4 mx-auto mt-8 grid grid-cols-3 gap-y-4">
+        <Goods discription="たくあきの画像" />
+        <Goods discription="たくあきの画像" />
+        <Goods discription="たくあきの画像" />
+        <Goods discription="たくあきの画像" />
+        <Goods discription="たくあきの画像" />
       </main>
+      <div className="fixed right-10 bottom-6">
+        <ExhibitionButton />
+      </div>
     </div>
   );
 }
