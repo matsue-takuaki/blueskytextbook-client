@@ -28,10 +28,14 @@ function School({ school }: any) {
   //   }
   // }, [user]);
   return (
-    <div className="h-screen bg-white">
+    <div className="bg-white">
       <Navber school={school}/>
-      <main className="w-3/4 mx-auto mt-8">
-        <Goods />
+      <main className="w-3/4 mx-auto mt-8 grid grid-cols-3">
+        <Goods discription="たくあきの画像"/>
+        <Goods discription="たくあきの画像"/>
+        <Goods discription="たくあきの画像"/>
+        <Goods discription="たくあきの画像"/>
+        <Goods discription="たくあきの画像"/>
       </main>
     </div>
   );

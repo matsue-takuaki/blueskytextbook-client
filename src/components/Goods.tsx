@@ -1,13 +1,27 @@
+import { auth } from "@/lib/firebase";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import Image from "next/image";
 import React from "react";
 
-function Goods() {
+function Goods({discription}:any) {
+  const photoUrl: string | StaticImport = auth.currentUser?.photoURL as string;
   return (
     <button>
-      <div className="w-60 " >
-        <img src="https://www.mext.go.jp/a_menu/shotou/doutoku/detail/__icsFiles/artimage/2011/02/24/c_edu03_04/1302317.jpg" alt=""  className="h-72"/>
-        <div className="bg-red-100 flex">
-          <div className="w-8 h-8 bg-blue-400 "></div>
-          <p className="align-middle ml-2">hogehogehogehgoe</p>
+      <div className="w-60">
+        <div className="bg-slate-200 flex">
+          <div className="w-8 h-8">
+            <img
+              src="https://pics.prcm.jp/85c14649984c2/84932439/jpeg/84932439_480x480.jpeg"
+              alt="プロフィール写真"
+              className="rounded-full"
+            />
+          </div>
+          <p className="align-middle ml-4 truncate">
+            {discription}
+          </p>
+        </div>
+        <div className="h-80 relative">
+        <Image src={photoUrl} alt="商品写真" fill objectFit="cover"/>
         </div>
       </div>
     </button>
