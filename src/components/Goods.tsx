@@ -3,7 +3,7 @@ import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import React from "react";
 
-function Goods({discription}:any) {
+function Goods({ discription }: any) {
   const photoUrl: string | StaticImport = auth.currentUser?.photoURL as string;
   return (
     <button>
@@ -16,12 +16,17 @@ function Goods({discription}:any) {
               className="rounded-full"
             />
           </div>
-          <p className="align-middle ml-4 truncate">
-            {discription}
-          </p>
+          <p className="align-middle ml-4 truncate">{discription}</p>
         </div>
         <div className="h-80 relative">
-        <Image src={photoUrl} alt="商品写真" fill objectFit="cover"/>
+          <Image
+            src={photoUrl}
+            alt="商品写真"
+            fill
+            style={{
+              objectFit: "cover",
+            }}
+          />
         </div>
       </div>
     </button>

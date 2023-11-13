@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { apiClient, apiSchool } from "@/lib/apiClient";
 import ExhibitionButton from "@/components/ExhibitionButton";
+import {useState} from "react"
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;

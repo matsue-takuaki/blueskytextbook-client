@@ -3,16 +3,17 @@ import { auth } from "@/lib/firebase";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Link from "next/link";
 
-
 function Navber(school: any) {
-  const currentUniversity = school.school.school_name;
-  const photoUrl:string | StaticImport = auth.currentUser?.photoURL as string;
+  const currentUniversity = school.school;
+  const photoUrl: string | StaticImport = auth.currentUser?.photoURL as string;
   return (
     <div className="border bg-teal-950">
       <div className="w-5/6 mx-auto flex justify-between items-center pt-4 pb-6">
-        <h1 className="text-teal-300 text-4xl font-bold block">
-          青空教科書　ー {currentUniversity} ー
-        </h1>
+        <Link href={`/transactions/${currentUniversity.school_code}`}>
+          <h1 className="text-teal-300 text-4xl font-bold block">
+            青空教科書　ー {currentUniversity.school_name} ー
+          </h1>
+        </Link>
         <div>
           <Link href={`/profile/${auth.currentUser?.uid}`}>
             <div className="bg-white rounded-full">

@@ -47,7 +47,7 @@ function Profile({ id }: any) {
   }, []);
   return (
     <div className="h-screen bg-white">
-      <NavbarProfile />
+      <NavbarProfile schoolData={schoolData}/>
       <Link href={`/transactions/${schoolData}`}>
         <div className="flex">
           <ArrowBackIosNewIcon/>
