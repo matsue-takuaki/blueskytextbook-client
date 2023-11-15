@@ -1,5 +1,6 @@
 import { auth } from '@/lib/firebase';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react'
@@ -17,11 +18,11 @@ function NavbarExhibition({school}:any) {
           </Link>
           <div>
             <Link href={`/profile/${auth.currentUser?.uid}`}>
-              <div className="bg-white rounded-full">
-                <img
+              <div className="bg-white rounded-full w-10 h-10">
+                <Image
                   src={photoUrl}
                   alt="プロフィール写真"
-                  height={50}
+                  fill
                   className="block border-double border-4 border-black rounded-full hover:opacity-80"
                 />
               </div>
