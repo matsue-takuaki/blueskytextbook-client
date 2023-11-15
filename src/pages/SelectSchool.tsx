@@ -40,7 +40,6 @@ function SelectSchool() {
           });
           router.push(`transactions/${selectSchools[0].school_code}`);
         }
-        console.log(selectSchools);
       });
   };
   const schoolChange = async (e: React.FormEvent<HTMLInputElement>) => {
