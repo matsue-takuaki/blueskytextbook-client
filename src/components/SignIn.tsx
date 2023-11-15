@@ -3,9 +3,11 @@ import React from "react";
 import { auth, provider } from "@/lib/firebase";
 import { apiClient, apiSchool } from "@/lib/apiClient";
 import { useRouter } from "next/router";
+import { useInfo } from "@/context/info";
 
 function SignIn() {
   const router = useRouter();
+  const {setUserId,setSchoolCode} = useInfo()
   const SignInwithGoogle = () => {
     signInWithPopup(auth, provider).then(async (result) => {
       const email = result.user.email;
@@ -16,10 +18,12 @@ function SignIn() {
         router.push("/SelectSchool");
       } else {
         const school = user.data.user.school;
+        setUserId(user.data.user.id);
         await apiSchool
           .get(`https://api.edu-data.jp/api/v1/school?keyword=${school}`)
           .then((response) => {
             const schoolCode = response.data.schools.data[0].school_code;
+            setSchoolCode(schoolCode);
             router.push(`/transactions/${schoolCode}`);
           });
       }

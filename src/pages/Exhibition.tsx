@@ -11,8 +11,6 @@ import Image from "next/image";
 function Exhibition() {
   const router = useRouter();
   const [user] = useAuthState(auth);
-  const [school, setSchool] = useState<string>("");
-  const [schoolData, setSchoolData] = useState<string>("");
   const [textbookImg, setTextbookImg] = useState(ImageLogo);
   const textbooknameRef = useRef<HTMLInputElement>(null);
   const textbookdiscriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -21,23 +19,6 @@ function Exhibition() {
   //     router.push("/");
   //   }
   // }, [user]);
-  useEffect(() => {
-    const getProfile = async () => {
-      const email = auth.currentUser?.email;
-      const user = await apiClient.post("/auth/get", {
-        email,
-      });
-      await apiSchool
-        .get(
-          `https://api.edu-data.jp/api/v1/school?keyword=${user.data.user.school}`
-        )
-        .then((response) => {
-          setSchoolData(response.data.schools.data[0].school_code);
-        });
-      setSchool(user.data.user.school);
-    };
-    getProfile();
-  }, []);
   const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
@@ -48,7 +29,7 @@ function Exhibition() {
   };
   return (
     <div className="h-screen bg-white w-full">
-      <NavbarExhibition school={schoolData} />
+      <NavbarExhibition />
       <div className="mx-auto w-1/2 mt-20">
         <form action="">
           <div className="flex">

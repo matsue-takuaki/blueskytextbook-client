@@ -1,3 +1,4 @@
+import { useInfo } from "@/context/info";
 import { apiClient, apiSchool } from "@/lib/apiClient";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/router";
@@ -7,6 +8,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 function SelectSchool() {
   const [user] = useAuthState(auth);
   const router = useRouter();
+  const {setUserId,setSchoolCode} = useInfo();
   const signout = () => {
     auth.signOut();
   };
@@ -33,10 +35,13 @@ function SelectSchool() {
           const username = user?.displayName;
           const email = user?.email;
           const school = selectSchools[0].school_name;
+          setSchoolCode(selectSchools[0].school_code);
           await apiClient.post("/auth/register", {
             username,
             email,
             school,
+          }).then((responce)=>{
+            setUserId(responce.data.user.id);
           });
           router.push(`transactions/${selectSchools[0].school_code}`);
         }
