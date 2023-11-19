@@ -1,41 +1,83 @@
 import NavbarExhibition from "@/components/NavbarExhibition";
-import Navber from "@/components/Navber";
-import { apiClient, apiSchool } from "@/lib/apiClient";
-import { auth } from "@/lib/firebase";
+import { apiClient } from "@/lib/apiClient";
+import { auth, storage } from "@/lib/firebase";
 import { useRouter } from "next/router";
 import React, { useState, useEffect, useRef } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import ImageLogo from "../../test/image.svg";
 import Image from "next/image";
+import { useInfo } from "@/context/info";
+import { deleteObject, ref, uploadBytes } from "firebase/storage";
 
 function Exhibition() {
   const router = useRouter();
   const [user] = useAuthState(auth);
-  const [textbookImg, setTextbookImg] = useState(ImageLogo);
+  const { userId } = useInfo();
+  const [textbookImgUrl, setTextbookImgUrl] = useState(ImageLogo);
+  const [preTextbookImgName, setPreTextbookImgName] = useState("");
+  const [isImageUploaded, setisImageUploaded] = useState<boolean>(false);
   const textbooknameRef = useRef<HTMLInputElement>(null);
   const textbookdiscriptionRef = useRef<HTMLTextAreaElement>(null);
+  const textbookImgref = useRef<HTMLInputElement>(null);
   // useEffect(() => {
   //   if (!user) {
   //     router.push("/");
   //   }
   // }, [user]);
-  const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onFileInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
     // React.ChangeEvent<HTMLInputElement>よりファイルを取得
     const fileObject = e.target.files[0];
     // オブジェクトURLを生成し、useState()を更新
-    setTextbookImg(window.URL.createObjectURL(fileObject));
+    setTextbookImgUrl(window.URL.createObjectURL(fileObject));
+    setPreTextbookImgName(fileObject.name);
+    const textbookImageRef = ref(storage, `textbook/${fileObject.name}`);
+    uploadBytes(textbookImageRef, fileObject).then((snapshot) => {
+      if (isImageUploaded) {
+        // Create a reference to the file to delete
+        const desertRef = ref(storage, `textbook/${preTextbookImgName}`);
+        // Delete the file
+        deleteObject(desertRef)
+          .catch((error) => {
+            // Uh-oh, an error occurred!
+            console.log(error);
+          });
+      }
+    });
+    setisImageUploaded(true);
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const textbookName = textbooknameRef.current?.value;
+    const discription = textbookdiscriptionRef.current?.value;
+    const textbookImgString = textbookImgref.current?.value;
+    const textbookImg = textbookImgString?.substr(12);
+    const sellerId = userId;
+    try {
+      await apiClient
+        .post("/product/exhibition", {
+          textbookName,
+          discription,
+          textbookImg,
+          sellerId,
+        })
+        .then((response) => {
+          console.log(response.data);
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div className="h-screen bg-white w-full">
       <NavbarExhibition />
       <div className="mx-auto w-1/2 mt-20">
-        <form action="">
+        <form action="" onSubmit={handleSubmit}>
           <div className="flex">
             <div className="w-60 h-60">
               <Image
-                src={textbookImg}
+                src={textbookImgUrl}
                 width={200}
                 height={400}
                 alt="教科書画像"
@@ -43,7 +85,13 @@ function Exhibition() {
                   objectFit: "cover",
                 }}
               />
-              <input type="file" className="" onChange={onFileInputChange} />
+              <input
+                type="file"
+                accept=".png,.jpeg,.jpg"
+                className=""
+                ref={textbookImgref}
+                onChange={onFileInputChange}
+              />
             </div>
             <div className="flex flex-col">
               <div className="block">
