@@ -1,5 +1,6 @@
 import { auth } from "@/lib/firebase";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import Image from "next/image";
 import React from "react";
 
 function ProfileData(school:any) {
@@ -7,7 +8,7 @@ function ProfileData(school:any) {
   return (
     <div>
       <div className="flex items-center justify-evenly">
-        <img src={photoUrl} className="rounded-full " alt="プロフィール写真" />
+        <Image src={photoUrl} className="rounded-full" width={100} height={100} alt="プロフィール写真" />
         <p className="text-3xl">
           名前： {auth.currentUser?.displayName}
         </p>

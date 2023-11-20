@@ -30,8 +30,10 @@ function Goods(props: Props) {
       <div className="w-60">
         <div className="bg-slate-200 flex">
           <div className="w-8 h-8">
-            <img
-              src="https://pics.prcm.jp/85c14649984c2/84932439/jpeg/84932439_480x480.jpeg"
+            <Image
+              src={productUrl}
+              width={50}
+              height={50}
               alt="プロフィール写真"
             />
           </div>
