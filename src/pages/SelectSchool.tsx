@@ -12,11 +12,11 @@ function SelectSchool() {
   const signout = () => {
     auth.signOut();
   };
-  useEffect(() => {
-    if (!user) {
-      router.push("/");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     router.push("/");
+  //   }
+  // }, [user]);
   const [schools, setSchools] = useState([]);
   const schoolref = useRef<HTMLInputElement>(null);
   const schoolSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

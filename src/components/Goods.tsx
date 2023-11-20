@@ -1,13 +1,37 @@
-import { useInfo } from "@/context/info";
 import { auth, storage } from "@/lib/firebase";
-import { textbook } from "@/pages/types/type";
 import { getDownloadURL, ref } from "firebase/storage";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import React,{useState} from "react";
 
 interface Props {
-  textbook: textbook;
+  textbook: Textbook;
+}
+
+interface User {
+  id: number;
+  email: String;
+  school: String;
+  textbooks: Textbook[]
+  goods: Good[]
+}
+
+interface Textbook {
+  id: number;
+  discription: string;
+  schoolCode: string;
+  sellerId: number;
+  textbookImg: string;
+  textbookName: string;
+  goods:Good[]
+}
+
+interface Good {
+  id: number;
+  sellerId: number;
+  seller: User;
+  textbookId: number;
+  textbook: Textbook
 }
 
 function Goods(props: Props) {
@@ -30,12 +54,14 @@ function Goods(props: Props) {
       <div className="w-60">
         <div className="bg-slate-200 flex">
           <div className="w-8 h-8">
-            <img
-              src="https://pics.prcm.jp/85c14649984c2/84932439/jpeg/84932439_480x480.jpeg"
+            <Image
+              src={productUrl}
+              width={50}
+              height={50}
               alt="プロフィール写真"
             />
           </div>
-          <p className="align-middle ml-4 truncate">{textbook.textbookName}</p>
+          <p className="align-middle ml-4 truncate text-xl">{textbook.textbookName}</p>
         </div>
         <div className="h-80 relative">
           <Image

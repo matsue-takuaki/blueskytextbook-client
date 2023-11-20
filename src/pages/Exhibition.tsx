@@ -12,7 +12,7 @@ import { deleteObject, ref, uploadBytes } from "firebase/storage";
 function Exhibition() {
   const router = useRouter();
   const [user] = useAuthState(auth);
-  const { userId,schoolCode } = useInfo();
+  const { userId, schoolCode } = useInfo();
   const [textbookImgUrl, setTextbookImgUrl] = useState(ImageLogo);
   const [preTextbookImgName, setPreTextbookImgName] = useState("");
   const [isImageUploaded, setisImageUploaded] = useState<boolean>(false);
@@ -32,17 +32,22 @@ function Exhibition() {
     // オブジェクトURLを生成し、useState()を更新
     setTextbookImgUrl(window.URL.createObjectURL(fileObject));
     setPreTextbookImgName(fileObject.name);
-    const textbookImageRef = ref(storage, `textbook/${schoolCode}/${fileObject.name}`);
+    const textbookImageRef = ref(
+      storage,
+      `textbook/${schoolCode}/${fileObject.name}`
+    );
     uploadBytes(textbookImageRef, fileObject).then((snapshot) => {
       if (isImageUploaded) {
         // Create a reference to the file to delete
-        const desertRef = ref(storage, `textbook/${schoolCode}/${preTextbookImgName}`);
+        const desertRef = ref(
+          storage,
+          `textbook/${schoolCode}/${preTextbookImgName}`
+        );
         // Delete the file
-        deleteObject(desertRef)
-          .catch((error) => {
-            // Uh-oh, an error occurred!
-            console.log(error);
-          });
+        deleteObject(desertRef).catch((error) => {
+          // Uh-oh, an error occurred!
+          console.log(error);
+        });
       }
     });
     setisImageUploaded(true);
@@ -55,25 +60,25 @@ function Exhibition() {
     const textbookImg = textbookImgString?.substr(12);
     const sellerId = userId;
     try {
-      await apiClient
-        .post("/product/exhibition", {
-          textbookName,
-          discription,
-          textbookImg,
-          schoolCode,
-          sellerId,
-        })
-        .then((response) => {
-          console.log(response.data);
-        });
+      await apiClient.post("/product/exhibition", {
+        textbookName,
+        discription,
+        textbookImg,
+        schoolCode,
+        sellerId,
+      });
+      alert("出品が完了しました");
+      router.push(`transactions/${schoolCode}`);
     } catch (err) {
+      alert("入力内容が正しくありません");
       console.log(err);
     }
   };
   return (
     <div className="h-screen bg-white w-full">
       <NavbarExhibition />
-      <div className="mx-auto w-1/2 mt-20">
+      <p className="text-2xl text-center mt-10">先に画像を選択してください</p>
+      <div className="mx-auto w-1/2 mt-10">
         <form action="" onSubmit={handleSubmit}>
           <div className="flex">
             <div className="w-60 h-60">
