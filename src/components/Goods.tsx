@@ -10,6 +10,7 @@ interface Props {
 
 interface User {
   id: number;
+  username:String;
   email: String;
   school: String;
   textbooks: Textbook[]
@@ -23,6 +24,7 @@ interface Textbook {
   sellerId: number;
   textbookImg: string;
   textbookName: string;
+  seller:User;
   goods:Good[]
 }
 
@@ -39,7 +41,6 @@ function Goods(props: Props) {
   const [ImageUrl,setImageUrl] = useState("");
   const id = process.browser ? location.pathname : "";
   const url = id.substring(14);
-  // console.log(url)
   const pathReference = ref(
     storage,
     `textbook/${url}/${textbook.textbookImg}`

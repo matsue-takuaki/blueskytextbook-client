@@ -10,6 +10,7 @@ import ExhibitionButton from "@/components/ExhibitionButton";
 
 interface User {
   id: number;
+  username:String;
   email: String;
   school: String;
   textbooks: Textbook[]
@@ -23,6 +24,7 @@ interface Textbook {
   sellerId: number;
   textbookImg: string;
   textbookName: string;
+  seller:User;
   goods:Good[]
 }
 
@@ -55,6 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 function School({ school, textbooks }: any) {
   const [user] = useAuthState(auth);
   const router = useRouter();
+  console.log(textbooks);
   // useEffect(() => {
   //   if (!user) {
   //     router.push("/");
