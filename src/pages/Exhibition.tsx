@@ -12,7 +12,7 @@ import { deleteObject, ref, uploadBytes } from "firebase/storage";
 function Exhibition() {
   const router = useRouter();
   const [user] = useAuthState(auth);
-  const { userId } = useInfo();
+  const { userId,schoolCode } = useInfo();
   const [textbookImgUrl, setTextbookImgUrl] = useState(ImageLogo);
   const [preTextbookImgName, setPreTextbookImgName] = useState("");
   const [isImageUploaded, setisImageUploaded] = useState<boolean>(false);
@@ -32,11 +32,11 @@ function Exhibition() {
     // オブジェクトURLを生成し、useState()を更新
     setTextbookImgUrl(window.URL.createObjectURL(fileObject));
     setPreTextbookImgName(fileObject.name);
-    const textbookImageRef = ref(storage, `textbook/${fileObject.name}`);
+    const textbookImageRef = ref(storage, `textbook/${schoolCode}/${fileObject.name}`);
     uploadBytes(textbookImageRef, fileObject).then((snapshot) => {
       if (isImageUploaded) {
         // Create a reference to the file to delete
-        const desertRef = ref(storage, `textbook/${preTextbookImgName}`);
+        const desertRef = ref(storage, `textbook/${schoolCode}/${preTextbookImgName}`);
         // Delete the file
         deleteObject(desertRef)
           .catch((error) => {
@@ -60,6 +60,7 @@ function Exhibition() {
           textbookName,
           discription,
           textbookImg,
+          schoolCode,
           sellerId,
         })
         .then((response) => {
