@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { apiClient, apiSchool } from "@/lib/apiClient";
 import ExhibitionButton from "@/components/ExhibitionButton";
-import { textbook } from "../types/type";
+import { Textbook } from "../types/type";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
@@ -39,7 +39,7 @@ function School({ school, textbooks }: any) {
     <div className="bg-white">
       <Navber school={school} />
       <main className="w-3/4 mx-auto mt-8 grid grid-cols-3 gap-x-4 gap-y-4">
-        {textbooks.map((textbook: textbook) => (
+        {textbooks.map((textbook: Textbook) => (
           <Goods textbook={textbook} key={textbook.id} />
         ))}
       </main>

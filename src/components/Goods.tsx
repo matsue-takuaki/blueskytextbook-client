@@ -1,13 +1,13 @@
 import { useInfo } from "@/context/info";
 import { auth, storage } from "@/lib/firebase";
-import { textbook } from "@/pages/types/type";
+import { Textbook } from "@/pages/types/type";
 import { getDownloadURL, ref } from "firebase/storage";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import React,{useState} from "react";
 
 interface Props {
-  textbook: textbook;
+  textbook: Textbook;
 }
 
 function Goods(props: Props) {
