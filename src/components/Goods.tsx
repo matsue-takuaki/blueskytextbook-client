@@ -35,7 +35,7 @@ function Goods(props: Props) {
               alt="プロフィール写真"
             />
           </div>
-          <p className="align-middle ml-4 truncate">{textbook.textbookName}</p>
+          <p className="align-middle ml-4 truncate text-xl">{textbook.textbookName}</p>
         </div>
         <div className="h-80 relative">
           <Image
