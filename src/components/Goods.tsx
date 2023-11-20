@@ -1,6 +1,4 @@
-import { useInfo } from "@/context/info";
 import { auth, storage } from "@/lib/firebase";
-import { Textbook } from "@/pages/types/type";
 import { getDownloadURL, ref } from "firebase/storage";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
@@ -8,6 +6,32 @@ import React,{useState} from "react";
 
 interface Props {
   textbook: Textbook;
+}
+
+interface User {
+  id: number;
+  email: String;
+  school: String;
+  textbooks: Textbook[]
+  goods: Good[]
+}
+
+interface Textbook {
+  id: number;
+  discription: string;
+  schoolCode: string;
+  sellerId: number;
+  textbookImg: string;
+  textbookName: string;
+  goods:Good[]
+}
+
+interface Good {
+  id: number;
+  sellerId: number;
+  seller: User;
+  textbookId: number;
+  textbook: Textbook
 }
 
 function Goods(props: Props) {

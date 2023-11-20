@@ -7,7 +7,32 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { apiClient, apiSchool } from "@/lib/apiClient";
 import ExhibitionButton from "@/components/ExhibitionButton";
-import { Textbook } from "../types/type";
+
+interface User {
+  id: number;
+  email: String;
+  school: String;
+  textbooks: Textbook[]
+  goods: Good[]
+}
+
+interface Textbook {
+  id: number;
+  discription: string;
+  schoolCode: string;
+  sellerId: number;
+  textbookImg: string;
+  textbookName: string;
+  goods:Good[]
+}
+
+interface Good {
+  id: number;
+  sellerId: number;
+  seller: User;
+  textbookId: number;
+  textbook: Textbook
+}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
