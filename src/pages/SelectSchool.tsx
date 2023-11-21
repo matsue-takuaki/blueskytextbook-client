@@ -32,12 +32,14 @@ function SelectSchool() {
         } else if (selectSchools.length > 1) {
           alert("学校が1つに絞れません");
         } else if (selectSchools.length == 1) {
+          const photoUrl = user?.photoURL;
           const username = user?.displayName;
           const email = user?.email;
           const school = selectSchools[0].school_name;
           setSchoolCode(selectSchools[0].school_code);
           await apiClient.post("/auth/register", {
             username,
+            photoUrl,
             email,
             school,
           }).then((responce)=>{
