@@ -4,7 +4,7 @@ import { auth, storage } from "@/lib/firebase";
 import { useRouter } from "next/router";
 import React, { useState, useEffect, useRef } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import ImageLogo from "../../test/image.svg";
+import ImageLogo from "../Images/image.svg";
 import Image from "next/image";
 import { useInfo } from "@/context/info";
 import { deleteObject, ref, uploadBytes } from "firebase/storage";
