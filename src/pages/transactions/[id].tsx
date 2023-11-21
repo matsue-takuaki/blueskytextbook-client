@@ -110,7 +110,7 @@ function School(props: Props) {
           <ExhibitionButton />
         </div>
         <div className={`fixed bottom-20 left-1/2 -translate-x-1/2 ${display} z-20`}>
-          <SelectedGood textbook={selectedTextbook}/>
+          <SelectedGood textbook={selectedTextbook} key={selectedTextbook?.id}/>
         </div>
       </div>
       <button onClick={handleDisplay}>
