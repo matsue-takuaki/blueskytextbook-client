@@ -1,4 +1,4 @@
-import { auth, storage } from "@/lib/firebase";
+import { storage } from "@/lib/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";

@@ -1,13 +1,12 @@
-import { auth, storage } from "@/lib/firebase";
-import { StaticImageData, StaticImport } from "next/dist/shared/lib/get-img-props";
+import { storage } from "@/lib/firebase";
+import { StaticImageData } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import React, { useState } from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { getDownloadURL, ref } from "firebase/storage";
 import { useInfo } from "@/context/info";
 import DefaultTextbook from "@/Images/defaultTextbook.jpg";
 import DefaultIcon from "@/Images/defaultIcon.png";
+import Heart from "./Heart";
 
 interface User {
   id: number;
@@ -42,24 +41,26 @@ interface Props {
   textbook: Textbook | undefined;
 }
 
-interface PhotoUrl {
-    photoUrl:string | StaticImageData
-}
-
 function SelectedGood(props: Props) {
   const { textbook } = props;
-  const photoUrl: string | StaticImageData = textbook ? textbook.seller.photoUrl as string : DefaultIcon;
+  const photoUrl: string | StaticImageData = textbook
+    ? (textbook.seller.photoUrl as string)
+    : DefaultIcon;
   const username = textbook ? textbook.seller.username : "ユーザーネーム";
   const textbookName = textbook ? textbook.textbookName : "教科書名";
   const discription = textbook ? textbook.discription : "~~~~~~~~~~";
-  const [ImageUrl, setImageUrl] = useState<string | StaticImageData>(DefaultTextbook);
-  const [like,setLike] = useState(false);
-  const {schoolCode} = useInfo();
-  if(textbook){
-      const pathReference = ref(storage, `textbook/${schoolCode}/${textbook?.textbookImg}`);
-      getDownloadURL(pathReference).then((response) => {
-        setImageUrl(response);
-      });
+  const [ImageUrl, setImageUrl] = useState<string | StaticImageData>(
+    DefaultTextbook
+  );
+  const { schoolCode } = useInfo();
+  if (textbook) {
+    const pathReference = ref(
+      storage,
+      `textbook/${schoolCode}/${textbook?.textbookImg}`
+    );
+    getDownloadURL(pathReference).then((response) => {
+      setImageUrl(response);
+    });
   }
   return (
     <div>
@@ -96,13 +97,7 @@ function SelectedGood(props: Props) {
           </div>
           <div className="mt-6">
             <div className="">
-              <button
-                onClick={() => {
-                  setLike(!like);
-                }}
-              >
-                {like ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-              </button>
+              <Heart textbook={textbook} />
               <button className="w-28 h-8 ml-4 rounded-xl bg-gray-900 text-white shadow-xl hover:bg-gray-700 transition-all">
                 <p className="text-bold">チャットする</p>
               </button>
