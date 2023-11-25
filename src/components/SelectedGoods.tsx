@@ -7,35 +7,7 @@ import { useInfo } from "@/context/info";
 import DefaultTextbook from "@/Images/defaultTextbook.jpg";
 import DefaultIcon from "@/Images/defaultIcon.png";
 import Heart from "./Heart";
-
-interface User {
-  id: number;
-  username: String;
-  email: String;
-  photoUrl: String;
-  school: String;
-  textbooks: Textbook[];
-  goods: Good[];
-}
-
-interface Textbook {
-  id: number;
-  discription: string;
-  schoolCode: string;
-  sellerId: number;
-  textbookImg: string;
-  textbookName: string;
-  seller: User;
-  goods: Good[];
-}
-
-interface Good {
-  id: number;
-  sellerId: number;
-  seller: User;
-  textbookId: number;
-  textbook: Textbook;
-}
+import Textbook from "@/lib/type";
 
 interface Props {
   textbook: Textbook | undefined;

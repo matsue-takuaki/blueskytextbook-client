@@ -1,54 +1,33 @@
 import { useInfo } from "@/context/info";
 import { storage } from "@/lib/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
-import { StaticImageData, StaticImport } from "next/dist/shared/lib/get-img-props";
+import {
+  StaticImageData,
+  StaticImport,
+} from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import React, { useState } from "react";
 import DefaultTextbook from "@/Images/defaultTextbook.jpg";
-
+import Textbook from "@/lib/type";
 
 interface Props {
   textbook: Textbook;
 }
 
-interface User {
-  id: number;
-  username: String;
-  email: String;
-  photoUrl: String;
-  school: String;
-  textbooks: Textbook[];
-  goods: Good[];
-}
-
-interface Textbook {
-  id: number;
-  discription: string;
-  schoolCode: string;
-  sellerId: number;
-  textbookImg: string;
-  textbookName: string;
-  seller: User;
-  goods: Good[];
-}
-
-interface Good {
-  id: number;
-  sellerId: number;
-  seller: User;
-  textbookId: number;
-  textbook: Textbook;
-}
-
 function Goods(props: Props) {
   const { textbook } = props;
-  const {schoolCode} = useInfo()
+  const { schoolCode } = useInfo();
   const photoUrl: string | StaticImport = textbook?.seller.photoUrl as string;
-  const [ImageUrl, setImageUrl] = useState<string | StaticImageData>(DefaultTextbook);
+  const [ImageUrl, setImageUrl] = useState<string | StaticImageData>(
+    DefaultTextbook
+  );
   // const id = process.browser ? location.pathname : "";
   // const url = id.substring(14);
-  if(textbook.textbookImg){
-    const pathReference = ref(storage, `textbook/${schoolCode}/${textbook?.textbookImg}`);
+  if (textbook.textbookImg) {
+    const pathReference = ref(
+      storage,
+      `textbook/${schoolCode}/${textbook?.textbookImg}`
+    );
     getDownloadURL(pathReference).then((response) => {
       setImageUrl(response);
     });

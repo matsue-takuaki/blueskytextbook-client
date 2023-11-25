@@ -11,35 +11,7 @@ import Goods from "@/components/Goods";
 import DeleteButton from "@/components/Delete";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
-
-interface User {
-  id: number;
-  username: String;
-  email: String;
-  photoUrl: String;
-  school: String;
-  textbooks: Textbook[];
-  goods: Good[];
-}
-
-interface Textbook {
-  id: number;
-  discription: string;
-  schoolCode: string;
-  sellerId: number;
-  textbookImg: string;
-  textbookName: string;
-  seller: User;
-  goods: Good[];
-}
-
-interface Good {
-  id: number;
-  sellerId: number;
-  seller: User;
-  textbookId: number;
-  textbook: Textbook;
-}
+import Textbook from "../../lib/type";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
@@ -143,38 +115,41 @@ function Profile(props: any) {
               </ToggleButton>
             </ToggleButtonGroup>
           </div>
-          {alignment == "left" ? <div className="mx-auto mt-8 grid grid-cols-3 gap-x-4 gap-y-4">
-            {myTextbooks.map((myTextbook: Textbook) => {
-              return (
-                <div className="relative" key={myTextbook.id}>
-                  <Goods textbook={myTextbook} key={myTextbook.id} />
-                  <div
-                    onClick={() => {
-                      handleDelete(myTextbook.id);
-                    }}
-                    className="absolute bottom-0"
-                  >
-                    <DeleteButton />
+          {alignment == "left" ? (
+            <div className="mx-auto mt-8 grid grid-cols-3 gap-x-4 gap-y-4">
+              {myTextbooks.map((myTextbook: Textbook) => {
+                return (
+                  <div className="relative" key={myTextbook.id}>
+                    <Goods textbook={myTextbook} key={myTextbook.id} />
+                    <div
+                      onClick={() => {
+                        handleDelete(myTextbook.id);
+                      }}
+                      className="absolute bottom-0"
+                    >
+                      <DeleteButton />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div> : <div className="mx-auto mt-8 grid grid-cols-3 gap-x-4 gap-y-4">
-            {favoriteTextbooks.map((myTextbook: Textbook) => {
-              return (
-                <div className="relative" key={myTextbook.id}>
-                  <Goods textbook={myTextbook} key={myTextbook.id} />
-                  <div
-                    onClick={() => {
-                      handleDelete(myTextbook.id);
-                    }}
-                    className="absolute bottom-0"
-                  >
+                );
+              })}
+            </div>
+          ) : (
+            <div className="mx-auto mt-8 grid grid-cols-3 gap-x-4 gap-y-4">
+              {favoriteTextbooks.map((myTextbook: Textbook) => {
+                return (
+                  <div className="relative" key={myTextbook.id}>
+                    <Goods textbook={myTextbook} key={myTextbook.id} />
+                    <div
+                      onClick={() => {
+                        handleDelete(myTextbook.id);
+                      }}
+                      className="absolute bottom-0"
+                    ></div>
                   </div>
-                </div>
-              );
-            })}
-          </div>}
+                );
+              })}
+            </div>
+          )}
         </main>
       </div>
     </div>
