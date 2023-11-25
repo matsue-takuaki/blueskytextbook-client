@@ -11,7 +11,7 @@ import Goods from "@/components/Goods";
 import DeleteButton from "@/components/Delete";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
-import { Textbook } from "../type";
+import Textbook from "../type";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;

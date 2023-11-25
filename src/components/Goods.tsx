@@ -5,7 +5,7 @@ import { StaticImageData, StaticImport } from "next/dist/shared/lib/get-img-prop
 import Image from "next/image";
 import React, { useState } from "react";
 import DefaultTextbook from "@/Images/defaultTextbook.jpg";
-import { Textbook } from "@/pages/type";
+import Textbook from "@/pages/type";
 
 interface Props {
   textbook: Textbook;

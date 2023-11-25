@@ -8,7 +8,7 @@ export interface User {
   goods: Good[];
 }
 
-export interface Textbook {
+export default interface Textbook {
   id: number;
   discription: string;
   schoolCode: string;
