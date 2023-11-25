@@ -9,35 +9,7 @@ import { apiClient, apiSchool } from "@/lib/apiClient";
 import ExhibitionButton from "@/components/ExhibitionButton";
 import { useInfo } from "@/context/info";
 import SelectedGood from "@/components/SelectedGoods";
-
-interface User {
-  id: number;
-  username: String;
-  email: String;
-  photoUrl: String;
-  school: String;
-  textbooks: Textbook[];
-  goods: Good[];
-}
-
-interface Textbook {
-  id: number;
-  discription: string;
-  schoolCode: string;
-  sellerId: number;
-  textbookImg: string;
-  textbookName: string;
-  seller: User;
-  goods: Good[];
-}
-
-interface Good {
-  id: number;
-  sellerId: number;
-  seller: User;
-  textbookId: number;
-  textbook: Textbook;
-}
+import { Textbook } from "../type";
 
 interface Props {
   school: any;

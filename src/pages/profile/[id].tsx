@@ -11,35 +11,7 @@ import Goods from "@/components/Goods";
 import DeleteButton from "@/components/Delete";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
-
-interface User {
-  id: number;
-  username: String;
-  email: String;
-  photoUrl: String;
-  school: String;
-  textbooks: Textbook[];
-  goods: Good[];
-}
-
-interface Textbook {
-  id: number;
-  discription: string;
-  schoolCode: string;
-  sellerId: number;
-  textbookImg: string;
-  textbookName: string;
-  seller: User;
-  goods: Good[];
-}
-
-interface Good {
-  id: number;
-  sellerId: number;
-  seller: User;
-  textbookId: number;
-  textbook: Textbook;
-}
+import { Textbook } from "../type";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;

@@ -5,38 +5,9 @@ import { StaticImageData, StaticImport } from "next/dist/shared/lib/get-img-prop
 import Image from "next/image";
 import React, { useState } from "react";
 import DefaultTextbook from "@/Images/defaultTextbook.jpg";
-
+import { Textbook } from "@/pages/type";
 
 interface Props {
-  textbook: Textbook;
-}
-
-interface User {
-  id: number;
-  username: String;
-  email: String;
-  photoUrl: String;
-  school: String;
-  textbooks: Textbook[];
-  goods: Good[];
-}
-
-interface Textbook {
-  id: number;
-  discription: string;
-  schoolCode: string;
-  sellerId: number;
-  textbookImg: string;
-  textbookName: string;
-  seller: User;
-  goods: Good[];
-}
-
-interface Good {
-  id: number;
-  sellerId: number;
-  seller: User;
-  textbookId: number;
   textbook: Textbook;
 }
 
