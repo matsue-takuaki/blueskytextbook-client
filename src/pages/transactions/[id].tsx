@@ -8,7 +8,6 @@ import { GetServerSideProps } from "next";
 import { apiClient, apiSchool } from "@/lib/apiClient";
 import ExhibitionButton from "@/components/ExhibitionButton";
 import { useInfo } from "@/context/info";
-import { text } from "stream/consumers";
 import SelectedGood from "@/components/SelectedGoods";
 
 interface User {
@@ -71,9 +70,9 @@ function School(props: Props) {
   const selectedTextbooks = textbooks.filter(
     (textbook) => textbook.sellerId != userId
   );
-  const [selectedTextbook, setSelectedTextbook] = useState<Textbook | undefined>(
-    undefined
-  );
+  const [selectedTextbook, setSelectedTextbook] = useState<
+    Textbook | undefined
+  >(undefined);
   const [display, setDisplay] = useState<string>("hidden");
   const [z_index, setZ_index] = useState<string>("-z-10");
   // useEffect(() => {
@@ -97,28 +96,29 @@ function School(props: Props) {
         <Navber school={school} />
         <main className="w-3/4 mx-auto mt-8 grid grid-cols-3 gap-x-4 gap-y-4">
           {selectedTextbooks.map((textbook: Textbook) => (
-            <button
+            <div
               onClick={() => {
                 selectTextbook(textbook);
               }}
               key={textbook.id}
             >
               <Goods textbook={textbook} key={textbook.id} />
-            </button>
+            </div>
           ))}
         </main>
         <div className="fixed right-10 bottom-6">
           <ExhibitionButton />
         </div>
-        <div className={`fixed bottom-20 left-1/2 -translate-x-1/2 ${display} z-20`}>
-          <SelectedGood textbook={selectedTextbook}/>
+        <div
+          className={`fixed bottom-20 left-1/2 -translate-x-1/2 ${display} z-20`}
+        >
+          <SelectedGood textbook={selectedTextbook} />
         </div>
       </div>
-      <button onClick={handleDisplay}>
-        <div
-          className={`bg-black w-screen h-screen fixed top-0 left-0 ${z_index} opacity-70`}
-        ></div>
-      </button>
+      <div
+        onClick={handleDisplay}
+        className={`bg-black w-screen h-screen fixed top-0 left-0 ${z_index} opacity-70`}
+      ></div>
     </div>
   );
 }
