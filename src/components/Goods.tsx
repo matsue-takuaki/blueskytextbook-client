@@ -1,8 +1,11 @@
+import { useInfo } from "@/context/info";
 import { storage } from "@/lib/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { StaticImageData, StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import React, { useState } from "react";
+import DefaultTextbook from "@/Images/defaultTextbook.jpg";
+
 
 interface Props {
   textbook: Textbook;
@@ -39,14 +42,17 @@ interface Good {
 
 function Goods(props: Props) {
   const { textbook } = props;
-  const photoUrl: string | StaticImport = textbook.seller.photoUrl as string;
-  const [ImageUrl, setImageUrl] = useState("");
-  const id = process.browser ? location.pathname : "";
-  const url = id.substring(14);
-  const pathReference = ref(storage, `textbook/${url}/${textbook.textbookImg}`);
-  getDownloadURL(pathReference).then((response) => {
-    setImageUrl(response);
-  });
+  const {schoolCode} = useInfo()
+  const photoUrl: string | StaticImport = textbook?.seller.photoUrl as string;
+  const [ImageUrl, setImageUrl] = useState<string | StaticImageData>(DefaultTextbook);
+  // const id = process.browser ? location.pathname : "";
+  // const url = id.substring(14);
+  if(textbook.textbookImg){
+    const pathReference = ref(storage, `textbook/${schoolCode}/${textbook?.textbookImg}`);
+    getDownloadURL(pathReference).then((response) => {
+      setImageUrl(response);
+    });
+  }
 
   return (
     <div className="w-60 bg-gray-500 hover:opacity-80">
@@ -55,7 +61,7 @@ function Goods(props: Props) {
           <Image src={photoUrl} width={50} height={50} alt="プロフィール写真" />
         </div>
         <p className="align-middle ml-4 truncate text-xl">
-          {textbook.textbookName}
+          {textbook?.textbookName}
         </p>
       </div>
       <div className="h-80 relative">

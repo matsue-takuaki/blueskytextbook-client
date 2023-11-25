@@ -43,9 +43,6 @@ function Heart(props: Props) {
   const [like, setLike] = useState(false);
   useEffect(() => {
     const processHeart = async () => {
-      console.log(textbook);
-      const selectedId = textbook?.id;
-      console.log(selectedId);
       await apiClient
         .post("/good/get_favorite", {
           sellerId: userId,
