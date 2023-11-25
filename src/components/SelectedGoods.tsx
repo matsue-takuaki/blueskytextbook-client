@@ -7,7 +7,7 @@ import { useInfo } from "@/context/info";
 import DefaultTextbook from "@/Images/defaultTextbook.jpg";
 import DefaultIcon from "@/Images/defaultIcon.png";
 import Heart from "./Heart";
-import Textbook from "@/pages/type";
+import Textbook from "@/lib/type";
 
 interface Props {
   textbook: Textbook | undefined;

@@ -3,7 +3,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { apiClient } from "@/lib/apiClient";
 import { useInfo } from "@/context/info";
-import Textbook from "@/pages/type";
+import Textbook from "@/lib/type";
 
 interface Props {
   textbook: Textbook | undefined;

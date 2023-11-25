@@ -9,7 +9,7 @@ import { apiClient, apiSchool } from "@/lib/apiClient";
 import ExhibitionButton from "@/components/ExhibitionButton";
 import { useInfo } from "@/context/info";
 import SelectedGood from "@/components/SelectedGoods";
-import Textbook  from "../type";
+import Textbook from "../../lib/type";
 
 interface Props {
   school: any;
