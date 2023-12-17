@@ -21,7 +21,7 @@ function NavbarProfile() {
     <div className="border bg-teal-950">
       <div className="w-5/6 mx-auto flex justify-between items-center pt-4 pb-6">
         <Link href={`/transactions/${schoolCode}`}>
-          <h1 className="text-teal-300 text-4xl font-bold block">青空教科書</h1>
+          <h1 className="text-teal-300 text-4xl font-bold block hover:opacity-80">青空教科書</h1>
         </Link>
         <button
           onClick={SignOut}
