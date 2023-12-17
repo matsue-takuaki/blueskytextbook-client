@@ -1,4 +1,4 @@
-import { auth, storage } from "@/lib/firebase";
+import { storage } from "@/lib/firebase";
 import { StaticImageData } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -6,20 +6,14 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { useInfo } from "@/context/info";
 import DefaultTextbook from "@/Images/defaultTextbook.jpg";
 import DefaultIcon from "@/Images/defaultIcon.png";
-import Heart from "./Heart";
 import Textbook from "@/lib/type";
-import { apiClient } from "@/lib/apiClient";
-import { useRouter } from "next/router";
 
 interface Props {
   textbook: Textbook | undefined;
-  boolean?: boolean;
 }
 
-function SelectedGood(props: Props) {
-  const { textbook, boolean = true } = props;
-  const { userId } = useInfo();
-  const router = useRouter();
+function MyGood(props: Props) {
+  const { textbook } = props;
   const photoUrl: string | StaticImageData = textbook
     ? (textbook.seller.photoUrl as string)
     : DefaultIcon;
@@ -39,49 +33,6 @@ function SelectedGood(props: Props) {
       setImageUrl(response);
     });
   }
-  const createMessage = async () => {
-    try {
-      await apiClient
-        .post("/message/get_messages", {
-          sellerId: textbook?.seller.id,
-          buyerId: userId,
-          textbookId: textbook?.id,
-        })
-        .then(async (responce: any) => {
-          if (responce.data.messages == null) {
-            await apiClient
-              .post("/message/create_messages", {
-                sellerId: textbook?.seller.id,
-                buyerId: userId,
-                textbookId: textbook?.id,
-              })
-              .then(() => {
-                router.push({
-                  pathname: `/messages/${auth.currentUser?.uid}`,
-                  query: {
-                    sellerId: textbook?.seller.id,
-                    buyerId: userId,
-                    textbookId: textbook?.id,
-                    userId,
-                  },
-                });
-              });
-          } else {
-            router.push({
-              pathname: `/messages/${auth.currentUser?.uid}`,
-              query: {
-                sellerId: textbook?.seller.id,
-                buyerId: userId,
-                textbookId: textbook?.id,
-                userId,
-              },
-            });
-          }
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <div>
       <div className="flex h-96 bg-gray-200">
@@ -115,21 +66,10 @@ function SelectedGood(props: Props) {
             <p className="text-xl">説明</p>
             <p className="text-xl font-bold">{discription}</p>
           </div>
-          <div className="mt-6">
-            <div className="">
-              {boolean && <Heart textbook={textbook} />}
-              <button
-                onClick={createMessage}
-                className="w-28 h-8 ml-4 rounded-xl bg-gray-900 text-white shadow-xl hover:bg-gray-700 transition-all"
-              >
-                <p className="text-bold">チャットする</p>
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default SelectedGood;
+export default MyGood;

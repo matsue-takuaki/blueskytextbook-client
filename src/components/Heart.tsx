@@ -26,6 +26,7 @@ function Heart(props: Props) {
     };
     processHeart();
   }, [textbook]);
+  
   const heartSubmit = () => {
     const reversalLike = !like;
     setLike(reversalLike);

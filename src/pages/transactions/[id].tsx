@@ -1,5 +1,5 @@
 import Goods from "@/components/Goods";
-import Navber from "@/components/Navber";
+import Navber from "@/components/Navbars/Navber";
 import { auth } from "@/lib/firebase";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -47,11 +47,11 @@ function School(props: Props) {
   >(undefined);
   const [display, setDisplay] = useState<string>("hidden");
   const [z_index, setZ_index] = useState<string>("-z-10");
-  // useEffect(() => {
-  //   if (!user) {
-  //     router.push("/");
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    }
+  }, [user]);
   const selectTextbook = (textbook: Textbook) => {
     setSelectedTextbook(textbook);
     setDisplay("");

@@ -1,4 +1,4 @@
-import NavbarExhibition from "@/components/NavbarExhibition";
+import NavbarExhibition from "@/components/Navbars/NavbarExhibition";
 import { apiClient } from "@/lib/apiClient";
 import { auth, storage } from "@/lib/firebase";
 import { useRouter } from "next/router";
@@ -19,11 +19,11 @@ function Exhibition() {
   const textbooknameRef = useRef<HTMLInputElement>(null);
   const textbookdiscriptionRef = useRef<HTMLTextAreaElement>(null);
   const textbookImgref = useRef<HTMLInputElement>(null);
-  // useEffect(() => {
-  //   if (!user) {
-  //     router.push("/");
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    }
+  }, [user]);
   const onFileInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 

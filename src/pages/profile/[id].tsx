@@ -1,4 +1,4 @@
-import NavbarProfile from "@/components/NavbarProfile";
+import NavbarProfile from "@/components/Navbars/NavbarProfile";
 import ProfileData from "@/components/Profile";
 import { auth } from "@/lib/firebase";
 import { GetServerSideProps } from "next";
@@ -12,6 +12,10 @@ import DeleteButton from "@/components/Delete";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 import Textbook from "../../lib/type";
+import SelectedGood from "@/components/SelectedGoods";
+import MyGood from "@/components/MyGoods";
+import ProfileHeart from "@/components/ProfileHeart";
+import EmailIcon from '@mui/icons-material/Email';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
@@ -48,14 +52,20 @@ function Profile(props: any) {
   const [favoriteTextbooks, setFavoriteTextbooks] =
     useState<Textbook[]>(favoriteTextbook);
   const [alignment, setAlignment] = useState<string | null>("left");
+  const [Heartdisplay, setHeartDisplay] = useState<string>("hidden");
+  const [Mydisplay, setMyDisplay] = useState<string>("hidden");
+  const [z_index, setZ_index] = useState<string>("-z-10");
+  const [selectedTextbook, setSelectedTextbook] = useState<
+    Textbook | undefined
+  >(undefined);
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     router.push("/");
-  //   }
-  // }, [user]);
   useEffect(() => {
-    // if(auth.currentUser?.uid != id){
+    if (!user) {
+      router.push("/");
+    }
+  }, [user]);
+  useEffect(() => {
+    // if(auth.currentUser?.uid != useLocation().pathname){
     //     alert("あなたはこのページに閲覧することはできません");
     //     router.push("/");
     //   }
@@ -70,21 +80,60 @@ function Profile(props: any) {
   }, []);
 
   const handleDelete = async (id: number) => {
+    const result = confirm("本当に削除しますか?");
+    if (result) {
+      try {
+        await apiClient
+          .post("/product/delete_textbook", {
+            id,
+          })
+          .then(() => {
+            const newMyTextbooks = myTextbooks.filter(
+              (myTextbook) => myTextbook.id != id
+            );
+            setMyTextbooks(newMyTextbooks);
+          });
+      } catch (err) {
+        console.log(err);
+        alert("削除がうまく実行できませんでした");
+      }
+    }
+  };
+  const handleHeartDelete = async (id: number) => {
     try {
       await apiClient
-        .post("/product/delete_textbook", {
-          id,
+        .post("/good/delete_favorite", {
+          sellerId: userId,
+          textbookId: id,
         })
         .then(() => {
-          const newMyTextbooks = myTextbooks.filter(
-            (myTextbook) => myTextbook.id != id
+          const newfavoriteTextbooks = favoriteTextbooks.filter(
+            (favoriteTextbook) => favoriteTextbook.id != id
           );
-          setMyTextbooks(newMyTextbooks);
+          setFavoriteTextbooks(newfavoriteTextbooks);
         });
     } catch (err) {
       console.log(err);
       alert("削除がうまく実行できませんでした");
     }
+  };
+
+  const handleDisplay = () => {
+    setHeartDisplay("hidden");
+    setMyDisplay("hidden");
+    setZ_index("-z-10");
+    setSelectedTextbook(undefined);
+  };
+
+  const selectGoodTextbook = (textbook: Textbook) => {
+    setSelectedTextbook(textbook);
+    setHeartDisplay("");
+    setZ_index("z-10");
+  };
+  const selectMyTextbook = (textbook: Textbook) => {
+    setSelectedTextbook(textbook);
+    setMyDisplay("");
+    setZ_index("z-10");
   };
 
   const handleAlignment = (
@@ -93,6 +142,15 @@ function Profile(props: any) {
   ) => {
     setAlignment(newAlignment);
   };
+
+  const messageRouter = () => {
+    router.push({
+      pathname: `/messages/${auth.currentUser?.uid}`,
+      query: {
+        userId,
+      },
+    })
+  }
   return (
     <div className="min-h-screen bg-white">
       <NavbarProfile />
@@ -114,15 +172,25 @@ function Profile(props: any) {
                 <p>いいねした商品</p>
               </ToggleButton>
             </ToggleButtonGroup>
+            <div onClick={messageRouter} className="ml-10 bg-black rounded-full py-2 px-2 hover:opacity-80">
+            <EmailIcon sx={{fontSize:30, color:"white"}}/>
+            </div>
           </div>
           {alignment == "left" ? (
             <div className="mx-auto mt-8 grid grid-cols-3 gap-x-4 gap-y-4">
               {myTextbooks.map((myTextbook: Textbook) => {
                 return (
-                  <div className="relative" key={myTextbook.id}>
+                  <div
+                    className="relative"
+                    onClick={() => {
+                      selectMyTextbook(myTextbook);
+                    }}
+                    key={myTextbook.id}
+                  >
                     <Goods textbook={myTextbook} key={myTextbook.id} />
                     <div
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         handleDelete(myTextbook.id);
                       }}
                       className="absolute bottom-0"
@@ -137,14 +205,23 @@ function Profile(props: any) {
             <div className="mx-auto mt-8 grid grid-cols-3 gap-x-4 gap-y-4">
               {favoriteTextbooks.map((myTextbook: Textbook) => {
                 return (
-                  <div className="relative" key={myTextbook.id}>
+                  <div
+                    className="relative"
+                    onClick={() => {
+                      selectGoodTextbook(myTextbook);
+                    }}
+                    key={myTextbook.id}
+                  >
                     <Goods textbook={myTextbook} key={myTextbook.id} />
                     <div
-                      onClick={() => {
-                        handleDelete(myTextbook.id);
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleHeartDelete(myTextbook.id);
                       }}
                       className="absolute bottom-0"
-                    ></div>
+                    >
+                      <ProfileHeart />
+                    </div>
                   </div>
                 );
               })}
@@ -152,6 +229,20 @@ function Profile(props: any) {
           )}
         </main>
       </div>
+      <div
+        className={`fixed bottom-20 left-1/2 -translate-x-1/2 ${Heartdisplay} z-20`}
+      >
+        <SelectedGood textbook={selectedTextbook} boolean={false} />
+      </div>
+      <div
+        className={`fixed bottom-20 left-1/2 -translate-x-1/2 ${Mydisplay} z-20`}
+      >
+        <MyGood textbook={selectedTextbook} />
+      </div>
+      <div
+        onClick={handleDisplay}
+        className={`bg-black w-screen h-screen fixed top-0 left-0 ${z_index} opacity-70`}
+      ></div>
     </div>
   );
 }

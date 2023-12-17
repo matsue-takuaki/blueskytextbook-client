@@ -16,7 +16,6 @@ export default function Home() {
         <div className="mt-56">
           <SignIn />
         </div>
-        <button onClick={signout}>サインアウト</button>
       </div>
     </div>
   );
