@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-function messageRoom(props: any) {
+function MessageRoom(props: any) {
   const { oneMessages, allMessages } = props;
   const { userId } = useInfo();
   const [user] = useAuthState(auth);
@@ -194,4 +194,4 @@ function messageRoom(props: any) {
   );
 }
 
-export default messageRoom;
+export default MessageRoom;
