@@ -24,6 +24,8 @@ function Exhibition() {
       router.push("/");
     }
   }, [user]);
+
+  // 商品の写真をストレージにアップロード
   const onFileInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
@@ -36,6 +38,7 @@ function Exhibition() {
       storage,
       `textbook/${schoolCode}/${fileObject.name}`
     );
+    // 写真をアップロードし、写真を上げなおしている場合前の写真を消す
     uploadBytes(textbookImageRef, fileObject).then((snapshot) => {
       if (isImageUploaded) {
         // Create a reference to the file to delete
@@ -52,6 +55,8 @@ function Exhibition() {
     });
     setisImageUploaded(true);
   };
+
+  // 商品出品
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const textbookName = textbooknameRef.current?.value;

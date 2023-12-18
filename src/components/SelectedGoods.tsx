@@ -39,6 +39,8 @@ function SelectedGood(props: Props) {
       setImageUrl(response);
     });
   }
+
+  // メッセージルームを作成する
   const createMessage = async () => {
     try {
       await apiClient

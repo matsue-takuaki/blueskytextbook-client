@@ -19,6 +19,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const buyerId = Number(context.query.buyerId);
   const textbookId = Number(context.query.textbookId);
   const userId = Number(context.query.userId);
+
+  // 選択されたメッセージがある場合それを取得
   const oneMessages =
     sellerId && buyerId && textbookId
       ? await apiClient
@@ -32,6 +34,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             return responce.data.messages;
           })
       : null;
+  
+  // 自分とメッセージしている部屋をすべて取得
   const allMessages = await apiClient
     .post("/message/get_allMessages", {
       userId,
@@ -57,10 +61,13 @@ function MessageRoom(props: any) {
   const [nowMessages, setNowMessages] = useState(oneMessages?.message);
   const [Messages, setMessages] = useState(allMessages);
   const [inputText, setInputText] = useState("");
+
+  // メッセージを下までスクロール
   const setScrollPosition = () => {
     overflowRef.current?.scrollTo(0, overflowRef.current?.offsetHeight);
   };
 
+  // メッセージを投稿
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputText) {
@@ -87,7 +94,10 @@ function MessageRoom(props: any) {
       alert("メッセージを入力してください");
     }
   };
+
+  // メッセージする人を選択
   const selectMessage = async (messages: any) => {
+    // その人とのメッセージを取得
     const latestMessages = await apiClient
       .post("/message/confirm_AllMessage", {
         sellerId: messages.sellerId,
@@ -117,6 +127,7 @@ function MessageRoom(props: any) {
       <NavbarMessage />
       <main className="flex w-5/6 mx-auto">
         <div className="h-96 w-1/4 bg-gray-900 overflow-y-auto">
+          {/* やりとりしている人を羅列 */}
           {Messages.length ? (
             Messages.map((Messages: any) => (
               <div
@@ -139,6 +150,7 @@ function MessageRoom(props: any) {
         </div>
         <div className="w-3/4">
           <div className="h-96 bg-[#7494C0] overflow-y-auto" ref={overflowRef}>
+            {/* メッセージを展開 */}
             {nowMessages ? (
               nowMessages.length ? (
                 nowMessages.map((message: any) => (
@@ -170,6 +182,7 @@ function MessageRoom(props: any) {
               </div>
             )}
           </div>
+          {/* メッセージ入力 */}
           <form onSubmit={handleSubmit}>
             <div className="h-10 bg-gray-300 flex">
               <input

@@ -20,9 +20,13 @@ import EmailIcon from '@mui/icons-material/Email';
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
   const userId = Number(context.query.userId);
+
+  // 自分が出品した商品取得
   const firstMyTextbook = await apiClient.post("/product/get_mytextbooks", {
     userId,
   });
+
+  // いいねした商品取得
   let favoriteTextbooks: Textbook[] = [];
   await apiClient
     .post("/good/get_favoriteTextbook", {
@@ -79,6 +83,7 @@ function Profile(props: any) {
     getProfile();
   }, []);
 
+  // 出品した商品を削除
   const handleDelete = async (id: number) => {
     const result = confirm("本当に削除しますか?");
     if (result) {
@@ -99,6 +104,8 @@ function Profile(props: any) {
       }
     }
   };
+
+  // いいねを外す
   const handleHeartDelete = async (id: number) => {
     try {
       await apiClient
@@ -118,6 +125,7 @@ function Profile(props: any) {
     }
   };
 
+  // 選択解除
   const handleDisplay = () => {
     setHeartDisplay("hidden");
     setMyDisplay("hidden");
@@ -125,17 +133,21 @@ function Profile(props: any) {
     setSelectedTextbook(undefined);
   };
 
+  // いいねした商品の詳細表示する
   const selectGoodTextbook = (textbook: Textbook) => {
     setSelectedTextbook(textbook);
     setHeartDisplay("");
     setZ_index("z-10");
   };
+
+  // 自分が出品した商品の詳細を表示する
   const selectMyTextbook = (textbook: Textbook) => {
     setSelectedTextbook(textbook);
     setMyDisplay("");
     setZ_index("z-10");
   };
 
+  // 自分が出品した商品はいいねした商品の切り替え
   const handleAlignment = (
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string | null
@@ -143,6 +155,7 @@ function Profile(props: any) {
     setAlignment(newAlignment);
   };
 
+  // メッセージルームへ移動
   const messageRouter = () => {
     router.push({
       pathname: `/messages/${auth.currentUser?.uid}`,
@@ -158,6 +171,7 @@ function Profile(props: any) {
         <ProfileData school={school} />
         <main className="">
           <div className="flex items-center">
+            {/* 自分の商品といいねした商品のtoggleボタン */}
             <ToggleButtonGroup
               color="primary"
               value={alignment}
@@ -172,12 +186,15 @@ function Profile(props: any) {
                 <p>いいねした商品</p>
               </ToggleButton>
             </ToggleButtonGroup>
+
+            {/* メッセージルーム移動ボタン */}
             <div onClick={messageRouter} className="ml-10 bg-black rounded-full py-2 px-2 hover:opacity-80">
             <EmailIcon sx={{fontSize:30, color:"white"}}/>
             </div>
           </div>
           {alignment == "left" ? (
             <div className="mx-auto mt-8 grid grid-cols-3 gap-x-4 gap-y-4">
+              {/* 自分の商品を陳列 */}
               {myTextbooks.map((myTextbook: Textbook) => {
                 return (
                   <div
@@ -203,6 +220,7 @@ function Profile(props: any) {
             </div>
           ) : (
             <div className="mx-auto mt-8 grid grid-cols-3 gap-x-4 gap-y-4">
+              {/* いいねした商品を陳列 */}
               {favoriteTextbooks.map((myTextbook: Textbook) => {
                 return (
                   <div

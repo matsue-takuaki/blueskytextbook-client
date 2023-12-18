@@ -21,6 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const schoolResponse = await apiSchool.get(
     `https://api.edu-data.jp/api/v1/school?keyword=${id}`
   );
+  // 学校内の出品された商品取得
   const textbooks = await apiClient.get("/product/get_textbooks", {
     data: {
       schoolCode: id,
@@ -52,11 +53,14 @@ function School(props: Props) {
       router.push("/");
     }
   }, [user]);
+
+  // 選択された商品を拡大表示
   const selectTextbook = (textbook: Textbook) => {
     setSelectedTextbook(textbook);
     setDisplay("");
     setZ_index("z-10");
   };
+  // 選択解除
   const handleDisplay = () => {
     setDisplay("hidden");
     setZ_index("-z-10");
@@ -67,6 +71,7 @@ function School(props: Props) {
       <div className="bg-white min-h-screen">
         <Navber school={school} />
         <main className="w-3/4 mx-auto mt-8 grid grid-cols-3 gap-x-4 gap-y-4">
+          {/* 商品陳列 */}
           {selectedTextbooks.map((textbook: Textbook) => (
             <div
               onClick={() => {

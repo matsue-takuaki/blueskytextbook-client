@@ -8,12 +8,16 @@ import { useInfo } from "@/context/info";
 function SignIn() {
   const router = useRouter();
   const {setUserId,setSchoolCode} = useInfo()
+
+  // googleでログインした後にtopページへ遷移
   const SignInwithGoogle = () => {
     signInWithPopup(auth, provider).then(async (result) => {
       const email = result.user.email;
       const user = await apiClient.post("/auth/get", {
         email,
       });
+      //初回ログインの場合学校選択ページへ
+      // それ以外はデータを取得してtopページ遷移
       if (!user.data.user) {
         router.push("/SelectSchool");
       } else {
