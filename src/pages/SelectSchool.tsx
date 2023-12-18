@@ -9,9 +9,6 @@ function SelectSchool() {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const {setUserId,setSchoolCode} = useInfo();
-  const signout = () => {
-    auth.signOut();
-  };
   useEffect(() => {
     if (!user) {
       router.push("/");
@@ -19,6 +16,8 @@ function SelectSchool() {
   }, [user]);
   const [schools, setSchools] = useState([]);
   const schoolref = useRef<HTMLInputElement>(null);
+
+  // 選択した学校でユーザー情報を登録しtopページへ
   const schoolSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await apiSchool
@@ -37,6 +36,7 @@ function SelectSchool() {
           const email = user?.email;
           const school = selectSchools[0].school_name;
           setSchoolCode(selectSchools[0].school_code);
+          // 情報登録
           await apiClient.post("/auth/register", {
             username,
             photoUrl,
@@ -49,6 +49,8 @@ function SelectSchool() {
         }
       });
   };
+
+  // 入力に該当する学校名を検索
   const schoolChange = async (e: React.FormEvent<HTMLInputElement>) => {
     await apiSchool
       .get(
@@ -95,7 +97,6 @@ function SelectSchool() {
               />
             </form>
           </div>
-          <button onClick={signout}>サインアウト</button>
         </div>
       </div>
     </div>

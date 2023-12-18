@@ -1,10 +1,6 @@
 import SignIn from "@/components/SignIn";
-import { auth } from "@/lib/firebase";
 
 export default function Home() {
-  const signout = () => {
-    auth.signOut();
-  };
   return (
     <div className="h-screen bg-white">
       <div className="pt-24">
