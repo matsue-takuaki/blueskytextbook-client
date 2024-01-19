@@ -48,7 +48,6 @@ function Exhibition() {
         );
         // Delete the file
         deleteObject(desertRef).catch((error) => {
-          // Uh-oh, an error occurred!
           console.log(error);
         });
       }
