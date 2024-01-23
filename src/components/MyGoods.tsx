@@ -1,11 +1,8 @@
-import { storage } from "@/lib/firebase";
 import { StaticImageData } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
-import React, { useState } from "react";
-import { getDownloadURL, ref } from "firebase/storage";
-import { useInfo } from "@/context/info";
-import DefaultTextbook from "@/Images/defaultTextbook.jpg";
+import React from "react";
 import DefaultIcon from "@/Images/defaultIcon.png";
+import DefaultTextbook from "@/Images/defaultTextbook.jpg";
 import Textbook from "@/lib/type";
 
 interface Props {
@@ -20,19 +17,7 @@ function MyGood(props: Props) {
   const username = textbook ? textbook.seller.username : "ユーザーネーム";
   const textbookName = textbook ? textbook.textbookName : "教科書名";
   const discription = textbook ? textbook.discription : "~~~~~~~~~~";
-  const [ImageUrl, setImageUrl] = useState<string | StaticImageData>(
-    DefaultTextbook
-  );
-  const { schoolCode } = useInfo();
-  if (textbook) {
-    const pathReference = ref(
-      storage,
-      `textbook/${schoolCode}/${textbook?.textbookImg}`
-    );
-    getDownloadURL(pathReference).then((response) => {
-      setImageUrl(response);
-    });
-  }
+  const ImageUrl = textbook ? textbook.textbookImg as string : DefaultTextbook;
   return (
     <div>
       <div className="flex h-96 bg-gray-200">

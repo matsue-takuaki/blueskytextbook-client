@@ -10,11 +10,15 @@ interface Props {
 }
 
 function Opponent(props: Props) {
-  const { photo, message, createdAt, confirm } = props;
+  const { photo, message, createdAt } = props;
   const photoUrl: string | StaticImport = photo as string;
   const day = new Date(createdAt);
   const month = day.getMonth() + 1;
-  const postingDate = `${day.getFullYear()}/${month}/${day.getDate()} ${day.getHours()}:${day.getMinutes()}`;
+  let hour =
+    day.getHours() < 10 ? "0" + String(day.getHours()) : day.getHours();
+  let minutes =
+    day.getMinutes() < 10 ? "0" + String(day.getMinutes()) : day.getMinutes();
+  const postingDate = `${day.getFullYear()}/${month}/${day.getDate()} ${hour}:${minutes}`;
   return (
     <div className="flex items-end">
       <div className="flex pt-3">
@@ -28,13 +32,10 @@ function Opponent(props: Props) {
           />
         </div>
         <div className="bg-white rounded-r-xl rounded-bl-xl w-64">
-          <p className="py-2 px-3 break-all">
-            {message}
-          </p>
+          <p className="py-2 px-3 break-all">{message}</p>
         </div>
       </div>
       <div className="ml-2 text-sm">
-        <p className="text-white">{!confirm || "既読"}</p>
         <p className="text-white">{postingDate}</p>
       </div>
     </div>
