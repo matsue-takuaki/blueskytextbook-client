@@ -7,13 +7,19 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import ImageLogo from "../Images/image.svg";
 import Image from "next/image";
 import { useInfo } from "@/context/info";
-import { deleteObject, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 
 function Exhibition() {
   const router = useRouter();
   const [user] = useAuthState(auth);
   const { userId, schoolCode } = useInfo();
   const [textbookImgUrl, setTextbookImgUrl] = useState(ImageLogo);
+  const [textbookImg, setTextbookImg] = useState("");
   const [preTextbookImgName, setPreTextbookImgName] = useState("");
   const [isImageUploaded, setisImageUploaded] = useState<boolean>(false);
   const textbooknameRef = useRef<HTMLInputElement>(null);
@@ -39,7 +45,12 @@ function Exhibition() {
       `textbook/${schoolCode}/${fileObject.name}`
     );
     // 写真をアップロードし、写真を上げなおしている場合前の写真を消す
-    uploadBytes(textbookImageRef, fileObject).then((snapshot) => {
+    uploadBytes(textbookImageRef, fileObject).then((snapshot: any) => {
+      // console.log(snapshot.metadata.fullPath);
+      const pathReference = ref(storage, snapshot.metadata.fullPath);
+      getDownloadURL(pathReference).then((response) => {
+        setTextbookImg(response);
+      });
       if (isImageUploaded) {
         // Create a reference to the file to delete
         const desertRef = ref(
@@ -58,24 +69,28 @@ function Exhibition() {
   // 商品出品
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const textbookName = textbooknameRef.current?.value;
-    const discription = textbookdiscriptionRef.current?.value;
-    const textbookImgString = textbookImgref.current?.value;
-    const textbookImg = textbookImgString?.substr(12);
-    const sellerId = userId;
-    try {
-      await apiClient.post("/product/exhibition", {
-        textbookName,
-        discription,
-        textbookImg,
-        schoolCode,
-        sellerId,
-      });
-      alert("出品が完了しました");
-      router.push(`transactions/${schoolCode}`);
-    } catch (err) {
-      alert("入力内容が正しくありません");
-      console.log(err);
+    if (textbookImg == "") {
+      alert("写真をアップロードしてください");
+    }else{
+      const textbookName = textbooknameRef.current?.value;
+      const discription = textbookdiscriptionRef.current?.value;
+      // const textbookImgString = textbookImgref.current?.value;
+      // const textbookImg = textbookImgString?.substr(12);
+      const sellerId = userId;
+      try {
+        await apiClient.post("/product/exhibition", {
+          textbookName,
+          discription,
+          textbookImg,
+          schoolCode,
+          sellerId,
+        });
+        alert("出品が完了しました");
+        router.push(`transactions/${schoolCode}`);
+      } catch (err) {
+        alert("入力内容が正しくありません");
+        console.log(err);
+      }
     }
   };
   return (

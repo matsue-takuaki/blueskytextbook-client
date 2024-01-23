@@ -1,10 +1,8 @@
-import { auth, storage } from "@/lib/firebase";
+import { auth } from "@/lib/firebase";
 import { StaticImageData } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
-import React, { useState } from "react";
-import { getDownloadURL, ref } from "firebase/storage";
+import React from "react";
 import { useInfo } from "@/context/info";
-import DefaultTextbook from "@/Images/defaultTextbook.jpg";
 import DefaultIcon from "@/Images/defaultIcon.png";
 import Heart from "./Heart";
 import Textbook from "@/lib/type";
@@ -26,19 +24,7 @@ function SelectedGood(props: Props) {
   const username = textbook ? textbook.seller.username : "ユーザーネーム";
   const textbookName = textbook ? textbook.textbookName : "教科書名";
   const discription = textbook ? textbook.discription : "~~~~~~~~~~";
-  const [ImageUrl, setImageUrl] = useState<string | StaticImageData>(
-    DefaultTextbook
-  );
-  const { schoolCode } = useInfo();
-  if (textbook) {
-    const pathReference = ref(
-      storage,
-      `textbook/${schoolCode}/${textbook?.textbookImg}`
-    );
-    getDownloadURL(pathReference).then((response) => {
-      setImageUrl(response);
-    });
-  }
+  const ImageUrl = textbook?.textbookImg as string
 
   // メッセージルームを作成する
   const createMessage = async () => {
